@@ -23,6 +23,7 @@ public class UserService {
     }
 
     public int createUser(User user) {
+        System.out.println("Creating a new user with name: " + user.getUsername());
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
@@ -34,6 +35,7 @@ public class UserService {
     public Integer getUserId(String username) {
         User user = userMapper.getUser(username);
         if (user != null) {
+            System.out.println("Current user is: " + user.getUsername() + " id:" + user.getUserid());
             return user.getUserid();
         } else {
             return null;

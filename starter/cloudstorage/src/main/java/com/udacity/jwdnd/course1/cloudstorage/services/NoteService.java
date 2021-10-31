@@ -16,16 +16,41 @@ public class NoteService {
         this.noteMapper = noteMapper;
     }
 
-    public void addNote(Integer userId, NoteForm noteForm) {
+    public Integer addNote(Integer userId, NoteForm noteForm) {
+        System.out.println("Trying to add new note...");
         Note newNote = new Note();
-        newNote.setnotetitle(noteForm.getNoteTitle());
-        newNote.setnotedescription(noteForm.getNoteDescription());
-        newNote.setUserid(userId);
+        newNote.setNoteTitle(noteForm.getNoteTitle());
+        newNote.setNoteDescription(noteForm.getNoteDescription());
+        newNote.setUserId(userId);
+        System.out.println("Adding new note to database with title: " + newNote.getNoteTitle());
 
-        noteMapper.insert(newNote);
+        return noteMapper.insert(newNote);
+    }
+
+    public void editNote(Integer userId, NoteForm noteForm) {
+        System.out.println("Editing note with id:" + noteForm.getNoteId());
+        Note note = new Note();
+        note.setNoteId(noteForm.getNoteId());
+        note.setNoteTitle(noteForm.getNoteTitle());
+        note.setNoteDescription(noteForm.getNoteDescription());
+        note.setUserId(userId);
+        noteMapper.updateNote(note);
+    }
+
+    public void deleteNote(Integer noteId) {
+        noteMapper.delete(noteId);
+    }
+
+    public Note getNoteById(Integer noteId) {
+        return noteMapper.getNoteById(noteId);
+    }
+
+    public Boolean isNoteInDatabase(String noteTitle, String noteDescription) {
+        return noteMapper.getNoteByContent(noteTitle, noteDescription) != null;
     }
 
     public List<Note> getNotesList(Integer userid) {
+        System.out.println("Fetching notes list from database with size: " + noteMapper.getAllNotesForUser(userid).size());
         return noteMapper.getAllNotesForUser(userid);
     }
 
